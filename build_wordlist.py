@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""One-time script to extract unique words from lemma.txt into words.txt."""
+"""One-time script to extract unique words from lemma.txt into words.txt.gz."""
 
+import gzip
 from pathlib import Path
 
 src = Path(__file__).parent / "lemma.txt"
-dst = Path(__file__).parent / "words.txt"
+dst = Path(__file__).parent / "words.txt.gz"
 
 words = set()
 with open(src, encoding="latin-1") as f:
@@ -19,7 +20,7 @@ with open(src, encoding="latin-1") as f:
             continue
         words.add(word)
 
-with open(dst, "w", encoding="utf-8") as f:
+with gzip.open(dst, "wt", encoding="utf-8") as f:
     for word in sorted(words):
         f.write(word + "\n")
 

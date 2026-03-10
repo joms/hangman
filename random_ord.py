@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 import argparse
+import gzip
 import random
 from pathlib import Path
 
 
 def load_words(min_length=6, length=None):
-    words_path = Path(__file__).parent / "words.txt"
+    words_path = Path(__file__).parent / "words.txt.gz"
     words = []
 
-    with open(words_path, encoding="utf-8") as f:
+    with gzip.open(words_path, "rt", encoding="utf-8") as f:
         for line in f:
             word = line.strip()
             if not word:
