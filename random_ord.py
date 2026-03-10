@@ -5,18 +5,13 @@ from pathlib import Path
 
 
 def load_words(min_length=6, length=None):
-    lemma_path = Path(__file__).parent / "lemma.txt"
+    words_path = Path(__file__).parent / "words.txt"
     words = []
 
-    with open(lemma_path, encoding="latin-1") as f:
-        for i, line in enumerate(f):
-            if i == 0:
-                continue
-            parts = line.strip().split("\t")
-            if len(parts) < 3:
-                continue
-            word = parts[2]
-            if word.startswith("-") or not word.isalpha():
+    with open(words_path, encoding="utf-8") as f:
+        for line in f:
+            word = line.strip()
+            if not word:
                 continue
             if length is not None:
                 if len(word) == length:
