@@ -76,6 +76,9 @@ def display(word, guessed, wrong, stage):
     if wrong:
         print(", ".join(w.upper() for w in wrong))
     print()
+    print()
+    print("---")
+    print(f"Ordet: {word.upper()}")
 
 
 def main():
