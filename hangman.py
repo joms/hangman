@@ -85,36 +85,40 @@ def main():
     parser = argparse.ArgumentParser(description="Hangman med norske ord")
     parser.add_argument("--min-length", type=int, default=6, help="Minimum ordlengde (default: 6)")
     parser.add_argument("--length", type=int, help="Eksakt ordlengde")
+    parser.add_argument("word", nargs="?", help="Eget ord å bruke")
     args = parser.parse_args()
 
-    words = load_words(min_length=args.min_length, length=args.length)
-    if not words:
-        if args.length:
-            print(f"Ingen ord funnet med lengde {args.length}")
-        else:
-            print(f"Ingen ord funnet med minimumslengde {args.min_length}")
-        return
+    if args.word:
+        word = args.word.lower()
+    else:
+        words = load_words(min_length=args.min_length, length=args.length)
+        if not words:
+            if args.length:
+                print(f"Ingen ord funnet med lengde {args.length}")
+            else:
+                print(f"Ingen ord funnet med minimumslengde {args.min_length}")
+            return
 
-    word = None
-    while word is None:
-        candidates = random.sample(words, min(10, len(words)))
-        print("Velg et ord:\n")
-        for i, w in enumerate(candidates, 1):
-            print(f"  {i:2}. {w.capitalize()}")
-        print()
-        while True:
-            try:
-                choice = input("Velg nummer (1-10), eller 'r' for ny liste: ").strip().lower()
-            except (EOFError, KeyboardInterrupt):
-                print()
-                return
-            if choice == "r":
-                print()
-                break
-            if choice.isdigit() and 1 <= int(choice) <= len(candidates):
-                word = candidates[int(choice) - 1].lower()
-                break
-            print("Ugyldig valg, prøv igjen.")
+        word = None
+        while word is None:
+            candidates = random.sample(words, min(10, len(words)))
+            print("Velg et ord:\n")
+            for i, w in enumerate(candidates, 1):
+                print(f"  {i:2}. {w.capitalize()}")
+            print()
+            while True:
+                try:
+                    choice = input("Velg nummer (1-10), eller 'r' for ny liste: ").strip().lower()
+                except (EOFError, KeyboardInterrupt):
+                    print()
+                    return
+                if choice == "r":
+                    print()
+                    break
+                if choice.isdigit() and 1 <= int(choice) <= len(candidates):
+                    word = candidates[int(choice) - 1].lower()
+                    break
+                print("Ugyldig valg, prøv igjen.")
 
     guessed = set()
     wrong = []
